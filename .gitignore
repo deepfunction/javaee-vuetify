@@ -27,6 +27,7 @@ target
 logback.out.xml
 
 backend/src/main/webapp/static/
+backend/src/main/webapp/index.html
 backend/target
 frontend/dist/
 frontend/node/

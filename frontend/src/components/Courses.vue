@@ -18,7 +18,7 @@
                                 <v-btn text v-on="on">
                                     <v-badge color="cyan" left>
                                         <template v-slot:badge>
-                                            <span :class="[numberOfItemsAddedToCart > 0 ? 'tag is-info' : '']">{{ numberOfItemsAddedToCart }}</span>
+                                            <span :class="[getNumberOfItemsAddedToCart > 0 ? 'tag is-info' : '']">{{ getNumberOfItemsAddedToCart }}</span>
                                         </template>
                                         <v-icon large color="grey lighten-1">shopping_cart</v-icon>
                                     </v-badge>
@@ -123,7 +123,7 @@
                                 <v-divider></v-divider>
 
                                 <v-list dense v-show="!item.isBought && !item.isBusy && item.isAvailable" >
-                                    <v-list-item v-for="(key, index) in filteredKeys" :key="index"
+                                    <v-list-item v-for="(key, index) in getFilteredKeys" :key="index"
                                                  :color="sortBy === key ? `blue lighten-4` : `white`">
                                         <v-list-item-content>{{ key }}:</v-list-item-content>
                                         <v-list-item-content class="align-end">{{ item[key.toLowerCase()] }} $
@@ -180,13 +180,13 @@
 
                         </v-menu>
                         <div class="flex-grow-1"></div>
-                        <span class="mr-4 grey--text">Page {{ page }} of {{ numberOfPages }}</span>
+                        <span class="mr-4 grey--text">Page {{ page }} of {{ getNumberOfPages }}</span>
 
-                        <v-btn fab dark color="blue darken-3" class="mr-1" @click="formerPage">
+                        <v-btn fab dark color="blue darken-3" class="mr-1" @click="goToFormerPage">
                             <v-icon>mdi-chevron-left</v-icon>
                         </v-btn>
 
-                        <v-btn fab dark color="blue darken-3" class="ml-1" @click="nextPage">
+                        <v-btn fab dark color="blue darken-3" class="ml-1" @click="goToNextPage">
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
 
@@ -243,13 +243,13 @@
             }
         },
         computed: {
-            numberOfPages() {
+            getNumberOfPages() {
                 return Math.ceil(this.$store.getters.getItems.length / this.itemsPerPage)
             },
-            filteredKeys() {
+            getFilteredKeys() {
                 return this.$store.getters.getKeys.filter(key => key !== `Name`)
             },
-            numberOfItemsAddedToCart() {
+            getNumberOfItemsAddedToCart() {
                 return this.$store.getters.getItemsInCart.length;
             },
             getItemsInCart() {
@@ -273,10 +273,10 @@
             this.getItems();
         },
         methods: {
-            nextPage() {
-                if (this.page + 1 <= this.numberOfPages) this.page += 1
+            goToNextPage() {
+                if (this.page + 1 <= this.getNumberOfPages) this.page += 1
             },
-            formerPage() {
+            goToFormerPage() {
                 if (this.page - 1 >= 1) this.page -= 1
             },
             updateItemsPerPage(number) {
